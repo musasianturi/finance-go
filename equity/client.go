@@ -2,6 +2,7 @@ package equity
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	finance "github.com/piquette/finance-go"
@@ -42,7 +43,14 @@ func (i *Iter) Equity() *finance.Equity {
 
 // Get returns an equity quote that matches the parameters specified.
 func Get(symbol string) (*finance.Equity, error) {
-	i := List([]string{symbol})
+
+	newSymbol := symbol+".JK"
+
+	i := List([]string{newSymbol})
+
+	if i.Count() == 0 {
+		return nil, fmt.Errorf("unknow stock name :%s", symbol)
+	}
 
 	if !i.Next() {
 		return nil, i.Err()
