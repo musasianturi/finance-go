@@ -2,6 +2,7 @@ package quote
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	finance "github.com/piquette/finance-go"
@@ -60,7 +61,15 @@ func GetHistoricalQuote(symbol string, month int, day int, year int) (*finance.C
 
 // Get returns an Quote quote that matches the parameters specified.
 func Get(symbol string) (*finance.Quote, error) {
-	i := List([]string{symbol})
+
+	newSymbol := symbol+".JK"
+
+
+	i := List([]string{newSymbol})
+
+	if i.Count() == 0 {
+		return nil, fmt.Errorf("unknow stock name :%s", symbol)
+	}
 
 	if !i.Next() {
 		return nil, i.Err()
